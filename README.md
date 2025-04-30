@@ -56,3 +56,10 @@ Utilisé pour des objets statiques ou des formes détaillées.
 - **Problèmes de gameplay :** Les objets ou personnages pourraient "flotter" au-dessus des creux ou traverser des parties du terrain, car le collider ne correspondrait pas à la surface réelle.
 - **Performance inutile :** Les terrains sont souvent statiques et utilisent un MeshCollider non convex, qui est plus précis pour représenter des formes complexes.
 En résumé, un terrain entier ne devrait pas être convex, car cela compromettrait la précision et l'expérience utilisateur. Un MeshCollider non convex est plus adapté pour les terrains.
+
+### 3.1 Capturer un clic souris
+#### Comment déterminer les vertices proches du point cliqué ?
+Après avoir obtenu le point d'impact du clic, on peut parcourir tous les vertices du terrain et calculer leur distance par rapport au point d'impact. Si la distance est inférieure à un rayon donné, ces vertices sont considérés comme proches.
+
+#### Quelle distance autour du hit appliquer la déformation ?
+On prends tous les vertices considérés comme proche, sur ces vertices on rajoute sur l'axe y une valeur et on refait le mesh à partir des nouvelles valeurs des vertices.

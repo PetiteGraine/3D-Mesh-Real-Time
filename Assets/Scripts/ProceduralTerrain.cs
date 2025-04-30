@@ -2,14 +2,28 @@ using UnityEngine;
 
 public class ProceduralTerrain : MonoBehaviour
 {
-    private const int _width = 50;
-    private const int _height = 50;
+    [Header("Terrain Settings")]
+    [SerializeField] private const int _width = 50;
+    [SerializeField] private const int _height = 50;
+
+    [Header("Deformation Settings")]
+    [SerializeField] private float _radius = 2.5f;
+    [SerializeField] private float _deformationStrength = 0.5f;
+
+    [Header("Mesh Settings")]
     private Vector3[] _vertices;
     private int[] _triangles;
 
     private void Start()
     {
+        GenerateTerrain();
+        CreateTriangles();
         NewMesh();
+    }
+
+    private void Update()
+    {
+        DeformTerrain();
     }
 
     private void GenerateTerrain()
@@ -34,7 +48,6 @@ public class ProceduralTerrain : MonoBehaviour
 
     private void CreateTriangles()
     {
-        GenerateTerrain();
         _triangles = new int[(_width - 1) * (_height - 1) * 6];
         int index = 0;
 
@@ -62,7 +75,6 @@ public class ProceduralTerrain : MonoBehaviour
 
     private void NewMesh()
     {
-        CreateTriangles();
         Mesh mesh = new Mesh();
         mesh.vertices = _vertices;
         mesh.triangles = _triangles;
@@ -72,6 +84,29 @@ public class ProceduralTerrain : MonoBehaviour
         meshFilter.mesh = mesh;
 
         MeshCollider meshCollider = gameObject.GetComponent<MeshCollider>();
+        meshCollider.sharedMesh = null;
         meshCollider.sharedMesh = mesh;
+    }
+
+    private void DeformTerrain()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out RaycastHit hit))
+            {
+                Vector3 hitPoint = hit.point;
+                Debug.Log("Point d'impact : " + hitPoint);
+
+                for (int i = 0; i < _vertices.Length; i++)
+                {
+                    if (Vector3.Distance(_vertices[i], hitPoint) < _radius)
+                    {
+                        _vertices[i].y += _deformationStrength;
+                    }
+                }
+                NewMesh();
+            }
+        }
     }
 }
