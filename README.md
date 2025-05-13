@@ -63,3 +63,8 @@ Après avoir obtenu le point d'impact du clic, on peut parcourir tous les vertic
 
 #### Quelle distance autour du hit appliquer la déformation ?
 On prends tous les vertices considérés comme proche, sur ces vertices on rajoute sur l'axe y une valeur et on refait le mesh à partir des nouvelles valeurs des vertices.
+
+### 4.1 Mise en place d'un LOD simple
+#### Pourquoi utiliser des Jobs dans ce contexte ?
+- **Parallélisme :** Le Job System permet d'exécuter des boucles (comme for) sur plusieurs threads CPU en parallèle. Au lieu de traiter chaque vertex un par un sur le thread principal, on peut répartir la charge sur plusieurs cœurs.
+- **Performances accrues :** Le Burst Compiler compile le code C# en instructions machine ultra-optimisées. Cela peut considérablement accélérer les calculs mathématiques répétitifs (comme ici, la distance entre points et l'ajustement des hauteurs).
