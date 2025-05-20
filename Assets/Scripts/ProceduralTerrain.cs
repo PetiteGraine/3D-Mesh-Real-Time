@@ -6,18 +6,18 @@ using Unity.Jobs;
 [BurstCompile]
 public struct DeformJob : IJobParallelFor
 {
-    public NativeArray<Vector3> vertices;
-    public Vector3 hitPoint;
-    public float radius;
-    public float strength;
+    public NativeArray<Vector3> Vertices;
+    public Vector3 HitPoint;
+    public float Radius;
+    public float Strength;
 
     public void Execute(int index)
     {
-        Vector3 v = vertices[index];
-        if (Vector3.Distance(v, hitPoint) < radius)
+        Vector3 v = Vertices[index];
+        if (Vector3.Distance(v, HitPoint) < Radius)
         {
-            v.y += strength;
-            vertices[index] = v;
+            v.y += Strength;
+            Vertices[index] = v;
         }
     }
 }
@@ -160,10 +160,10 @@ public class ProceduralTerrain : MonoBehaviour
 
                 DeformJob job = new DeformJob
                 {
-                    vertices = nativeVertices,
-                    hitPoint = hitPoint,
-                    radius = _radius,
-                    strength = _deformationStrength
+                    Vertices = nativeVertices,
+                    HitPoint = hitPoint,
+                    Radius = _radius,
+                    Strength = _deformationStrength
                 };
 
                 JobHandle handle = job.Schedule(nativeVertices.Length, 64);
