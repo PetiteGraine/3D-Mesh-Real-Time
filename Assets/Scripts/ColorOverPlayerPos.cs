@@ -20,7 +20,6 @@ public class ColorOverPlayerPos : MonoBehaviour
         if (_player != null)
         {
             UpdateColor();
-            Debug.Log($"Distance: {_distance}, Color: {_color}");
         }
     }
 
