@@ -2,6 +2,8 @@ using Unity.Collections;
 using UnityEngine;
 using Unity.Burst;
 using Unity.Jobs;
+using UnityEngine.AI;
+using Unity.AI.Navigation;
 
 [BurstCompile]
 public struct DeformJob : IJobParallelFor
@@ -49,6 +51,7 @@ public class ProceduralTerrain : MonoBehaviour
 
         GetComponent<MeshFilter>().mesh = _highResMesh;
         GetComponent<MeshCollider>().sharedMesh = _highResMesh;
+        GetComponent<NavMeshSurface>().BuildNavMesh();
     }
 
     private void Update()
